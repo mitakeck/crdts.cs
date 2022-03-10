@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CRDTs
 {
-    public class MultiHashSet<Tk, Tv> where Tk: notnull
+    public record MultiHashSet<Tk, Tv> where Tk: notnull
     { 
         public Dictionary<Tk, List<Tv>> Values { get; private set; }
 
