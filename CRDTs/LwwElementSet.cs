@@ -17,6 +17,19 @@ namespace CRDTs
 
             Value = ts ?? DateTime.UtcNow.Ticks;
         }
+
+        public int CompareUfo(TimeStamp other)
+        {
+            return (
+                Value < other.Value,
+                Value == other.Value
+            ) switch
+            {
+                (true, _) => -1,
+                (_, true) => 0,
+                _ => 1,
+            };
+        }
     }
 
     public class LwwElementSet<T> where T: notnull
