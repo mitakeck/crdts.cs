@@ -56,6 +56,11 @@ namespace CRDTs
                 return;
             }
 
+            if (current.Value > target.Value)
+            {
+                return;
+            }
+
             if (current.Value < target.Value)
             {
                 Added.Remove(element);
@@ -65,11 +70,15 @@ namespace CRDTs
                 return;
             }
 
-            if (current.Value >= target.Value)
+            if (current.Value == target.Value)
             {
-                // nothing todo
+                Added.Remove(element);
+                Removed.Remove(element);
+
+                Added.Add(element, target);
                 return;
             }
+
         }
 
         public void Remove(T element, TimeStamp? timestamp = null)
@@ -83,6 +92,11 @@ namespace CRDTs
                 return;
             }
 
+            if (current.Value > target.Value)
+            {
+                return;
+            }
+
             if (current.Value < target.Value)
             {
                 Added.Remove(element);
@@ -92,9 +106,12 @@ namespace CRDTs
                 return;
             }
 
-            if (current.Value >= target.Value)
+            if (current.Value == target.Value)
             {
-                // nothing todo
+                Added.Remove(element);
+                Removed.Remove(element);
+
+                Added.Add(element, target);
                 return;
             }
         }

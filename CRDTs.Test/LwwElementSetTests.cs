@@ -188,5 +188,51 @@ namespace CRDTs.Tests
             Assert.IsTrue(set1.Values.Contains("C"));
             Assert.IsTrue(set1.Values.Contains("D"));
         }
+
+        //////////////////////////////////
+        
+        [TestMethod]
+        public void BookingTest()
+        {
+            var set1 = new LwwElementSet<string>();
+            var set2 = new LwwElementSet<string>();
+
+            var time = 100;
+
+            set1.Add("A", new TimeStamp(time));
+            set2.Remove("A", new TimeStamp(time));
+
+            set1.Merge(set2);
+            set2.Merge(set1);
+
+            Assert.AreEqual(set1.Values.Count, set2.Values.Count);
+        }
+
+        [TestMethod]
+        public void BookingTest2()
+        {
+            var set1 = new LwwElementSet<string>();
+            var set2 = new LwwElementSet<string>();
+            var set3 = new LwwElementSet<string>();
+
+            var time = 100;
+
+            set1.Add("A", new TimeStamp(time));
+            set2.Remove("A", new TimeStamp(time));
+            set3.Add("A", new TimeStamp(time + 1));
+
+            set1.Merge(set2);
+            set2.Merge(set1);
+
+            Assert.AreEqual(set1.Values.Count, set2.Values.Count);
+
+            set1.Merge(set3);
+            set2.Merge(set3);
+            set3.Merge(set1);
+            set3.Merge(set2);
+
+            Assert.AreEqual(set1.Values.Count, set2.Values.Count);
+            Assert.AreEqual(set2.Values.Count, set3.Values.Count);
+        }
     }
 }
